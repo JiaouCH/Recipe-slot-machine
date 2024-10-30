@@ -1,0 +1,25 @@
+/* SlotMachineModify.css */
+
+/* 使用 flexbox 布局来使四个 Carousel 在同一行内显示 */
+.slot-machine-container {
+    display: flex;
+    justify-content: space-around; /* 每个 Carousel 之间有间距 */
+    align-items: center; /* 垂直居中对齐 */
+    padding: 20px;
+  }
+  
+  /* 控制每个 Carousel 的宽度 */
+  .carousel-wrapper {
+    width: 20%; /* 每个 Carousel 占 20% 的宽度 */
+  }
+  
+  /* 你可以调整 Carousel 内容的字体大小、颜色和其他样式 */
+  .carousel-wrapper h3 {
+    font-size: 16px;
+    color: white;
+    background-color: #364d79;
+    margin: 0;
+    line-height: 160px;
+    text-align: center;
+  }
+  
