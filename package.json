@@ -1,5 +1,6 @@
 {
   "name": "recipe-slot-machine",
+  "homepage": "http://jiaouch.github.io/Recipe-slot-machine/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
