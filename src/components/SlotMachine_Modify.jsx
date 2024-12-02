@@ -49,11 +49,28 @@ const SlotMachine = () => {
   const contentStyle = {
     margin: 0,
     height: '160px',
-    color: '#fff',
+    color: 'black',
     lineHeight: '160px',
     textAlign: 'center',
-    background: '#364d79',
+    background: '#89B9AD',
+    borderRadius: '10px',
+    border: '3px solid #fff',
+    fontSize: '1.2rem',
+    fontFamily: 'Georgia, Helvetica, Arial, sans-serif',
+    color: '#4A4A4A',
   };
+
+  const contentStyleColor2 = {
+    background: '#FFC5C5'
+  }
+
+  const contentStyleColor3 = {
+    background: '#C7DCA7'
+  }
+
+  const contentStyleColor4 = {
+    background: '#ADD8E6'
+  }
 
   return (
     <div className="slot-machine-container">
@@ -70,7 +87,7 @@ const SlotMachine = () => {
         <Carousel autoplay={isRolling} vertical autoplaySpeed={450} dots={false} ref={MeatRef}> 
           {options.meats.map((meat, index) => (
             <div key={index}>
-              <h3 style={contentStyle}>{meat.option}</h3>
+              <h3 style={{...contentStyle, ...contentStyleColor2}}>{meat.option}</h3>
             </div>
           ))}
         </Carousel>
@@ -79,7 +96,7 @@ const SlotMachine = () => {
         <Carousel autoplay={isRolling} vertical autoplaySpeed={360} dots={false} ref={SidesRef}>
           {options.sides.map((sides, index) => (
             <div key={index}>
-              <h3 style={contentStyle}>{sides.option}</h3>
+              <h3 style={{...contentStyle, ...contentStyleColor3}}>{sides.option}</h3>
             </div>
           ))}
         </Carousel>
@@ -88,7 +105,7 @@ const SlotMachine = () => {
         <Carousel autoplay={isRolling} vertical autoplaySpeed={570} dots={false} ref={DrinkRef}>
           {options.drinks.map((drink, index) => (
             <div key={index}>
-              <h3 style={contentStyle}>{drink.option}</h3>
+              <h3 style={{...contentStyle, ...contentStyleColor4}}>{drink.option}</h3>
             </div>
           ))}
         </Carousel>

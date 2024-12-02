@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'antd';
 import { TOGGLE_SELECTED_OPTIONS, DELETE_OPTIONS, OPEN_OPTION_MODAL } from '../reducer';
-import { hover } from '@testing-library/user-event/dist/hover';
 import OptionForm from './OptionForm';
-import { type } from '@testing-library/user-event/dist/type';
 
 const Options = () => {
     const dispatch = useDispatch();
@@ -37,96 +35,34 @@ const Options = () => {
 
     return (
         <div style={styles.container}>
-            <h2>Options</h2>
+            <h2 style={styles.header}>Options</h2>
             <div style={styles.optionsGroupContainer}>
-                <div style={styles.optionGroup}>
-                    <h3>Methods</h3>
-                    <div style={styles.flexContainer}>
-                        {options.methods.map((method, index) => 
-                            <span 
-                                key={index} 
-                                onClick={() => {
-                                    toggleSelectedOptions(method.key, 'methods');
-                                }}
-                                style={selectedOptions.methods.has(method.key) ? styles.optionSelected : styles.optionUnselected}
-                            >
-                                {method.option}
-                            </span>
-                        )}
+                {['methods', 'meats', 'sides', 'drinks'].map((type, index) => (
+                    <div key={index} style={styles.optionGroup}>
+                        <h3 style={styles.optionGroupHeader}>{type.charAt(0).toUpperCase() + type.slice(1)}</h3>
+                        <div style={styles.flexContainer}>
+                            {options[type].map((option, index) => (
+                                <span 
+                                    key={index} 
+                                    onClick={() => {
+                                        toggleSelectedOptions(option.key, type);
+                                    }}
+                                    style={selectedOptions[type].has(option.key) ? styles.optionSelected : styles.optionUnselected}
+                                >
+                                    {option.option}
+                                </span>
+                            ))}
+                        </div>
+                        <div style={styles.buttonContainer}>
+                            <Button onClick={() => { deleteOptions(type) }} style={styles.deleteAddButton}>Delete</Button>
+                            <Button onClick={() => { 
+                                setType(type);
+                                openAddOptionModal(); 
+                            }} style={styles.deleteAddButton}>Add {type.charAt(0).toUpperCase() + type.slice(1)}</Button>
+                        </div>
                     </div>
-                    <Button onClick={() => { deleteOptions('methods') }}>delete</Button>
-                    <Button onClick={() => { 
-                        setType((type) => 'methods');
-                        openAddOptionModal(); 
-                    }}>Add Method</Button>
-                </div>
-
-                <div style={styles.optionGroup}>
-                    <h3>Meats</h3>
-                    <div style={styles.flexContainer}>
-                        {options.meats.map((meat, index) => 
-                            <span 
-                                key={index} 
-                                onClick={() => {
-                                    toggleSelectedOptions(meat.key, 'meats');
-                                }}
-                                style={selectedOptions.meats.has(meat.key) ? styles.optionSelected : styles.optionUnselected}
-                            >
-                                {meat.option}
-                            </span>
-                        )}
-                    </div>
-                    <Button onClick={() => { deleteOptions('meats') }}>delete</Button>
-                    <Button onClick={() => { 
-                        setType((type) => 'methods');
-                        openAddOptionModal(); 
-                    }}>Add Meats</Button>
-                </div>
-
-                <div style={styles.optionGroup}>
-                    <h3>Sides</h3>
-                    <div style={styles.flexContainer}>
-                        {options.sides.map((side, index) => 
-                            <span 
-                                key={index} 
-                                onClick={() => {
-                                    toggleSelectedOptions(side.key, 'sides');
-                                }}
-                                style={selectedOptions.sides.has(side.key) ? styles.optionSelected : styles.optionUnselected}
-                            >
-                                {side.option}
-                            </span>
-                        )}
-                    </div>
-                    <Button onClick={() => { deleteOptions('sides') }}>delete</Button>
-                    <Button onClick={() => { 
-                        setType((type) => 'methods');
-                        openAddOptionModal(); 
-                    }}>Add Sides</Button>
-                </div>
-
-                <div style={styles.optionGroup}>
-                    <h3>Drinks</h3>
-                    <div style={styles.flexContainer}>
-                        {options.drinks.map((drink, index) => 
-                            <span 
-                                key={index} 
-                                onClick={() => {
-                                    toggleSelectedOptions(drink.key, 'drinks');
-                                }}
-                                style={selectedOptions.drinks.has(drink.key) ? styles.optionSelected : styles.optionUnselected}
-                            >
-                                {drink.option}
-                            </span>
-                        )}
-                    </div>
-                    <Button onClick={() => { deleteOptions('drinks') }}>delete</Button>
-                    <Button onClick={() => { 
-                        setType((type) => 'methods');
-                        openAddOptionModal(); 
-                    }}>Add Drinks</Button>
-                </div>
-                <OptionForm optionModalVisible={optionModalVisible} type={type}/>   
+                ))}
+                <OptionForm optionModalVisible={optionModalVisible} type={type} />   
             </div>
         </div>
     );
@@ -136,15 +72,34 @@ const styles = {
     container: {
         padding: '10px',
     },
+    header: {
+        fontFamily: 'Georgia, Helvetica, Arial, sans-serif',
+        color: '#4A4A4A',
+        fontSize: '32px',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
     optionsGroupContainer: {
-        display: 'flex',
-        flexDirection: 'column',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, 1fr)',
         gap: '20px',
+        marginTop: '20px',
     },
     optionGroup: {
         display: 'flex',
         flexDirection: 'column',
         gap: '10px',
+        padding: '10px',
+        borderRadius: '8px',
+        background: '#F6D6D6',  // 统一使用浅粉色背景
+        border: '3px solid #fff',
+    },
+    optionGroupHeader: {
+        fontSize: '24px',
+        fontWeight: 'bold',
+        fontFamily: '"Arial", sans-serif',
+        marginBottom: '10px',
+        textAlign: 'center',
     },
     flexContainer: {
         display: 'flex',
@@ -152,21 +107,36 @@ const styles = {
         gap: '10px',
     },
     optionSelected: {
-        curser: 'pointer',
+        cursor: 'pointer',
         backgroundColor: 'lightblue',
         margin: '5px',
         padding: '5px',
         borderRadius: '5px',
-        border: '1px solid black',
+        border: '3px solid black',
     },
     optionUnselected: {
-        curser: 'pointer',
-        backgroundColor: 'lightgrey',
+        cursor: 'pointer',
+        backgroundColor: '#F0FFFF',
         margin: '5px',
         padding: '5px',
         borderRadius: '5px',
-        border: '1px solid black',
-    }
-}
+        border: '3px solid white',
+    },
+    buttonContainer: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        gap: '10px',
+        marginTop: '10px',
+    },
+    deleteAddButton: {
+        padding: '5px 15px',
+        backgroundColor: '#3AA6B9', 
+        border: '1px solid #fff',
+        borderRadius: '5px',
+        cursor: 'pointer',
+        width: '45%',
+        color: 'white',
+    },
+};
 
 export default Options;

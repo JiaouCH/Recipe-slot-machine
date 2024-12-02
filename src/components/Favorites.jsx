@@ -16,29 +16,108 @@ const Favorites = () => {
         type: DELETE_FAVORITE,
         payload: { favoriteId: favoriteId },
     });
-};
+  };
 
   return (
-    <div>
-      <h2>Favorites</h2>
-        <List
-          dataSource={favorites}
-          renderItem={(item, index) => (
-            <List.Item
-              key={index}
-            >
-              <span 
-                onClick={() => dispatch({ type: OPEN_MODAL, payload: { selectedFavorite: item } })} 
-                style={{ cursor: 'pointer' }}
-              >{item.method} {item.meat} with {item.sides}, {item.drink}</span>
-              <i className="fa-solid fa-trash-can" onClick={ () => { deleteFavorite(item.key) } } style={{ cursor: 'pointer' }}></i>
-            </List.Item>
-          )}
-        />
-        <Button type='primary' onClick={() => dispatch({ type: OPEN_MODAL, payload: { selectedFavorite: null } })}>Add Favorite</Button>
+    <div style={styles.container}>
+      <h2 style={styles.header}>Favorites</h2>
+      <div style={styles.favoritesGroupContainer}>
+        <div style={styles.favoriteGroup}>
+          <List
+            dataSource={favorites}
+            renderItem={(item, index) => (
+              <List.Item key={index} style={styles.favoriteItem}>
+                <span 
+                  onClick={() => dispatch({ type: OPEN_MODAL, payload: { selectedFavorite: item } })} 
+                  style={styles.favoriteText}
+                >
+                  {item.method} {item.meat} with {item.sides}, {item.drink}
+                </span>
+                <i 
+                  className="fa-solid fa-trash-can" 
+                  onClick={() => { deleteFavorite(item.key) }} 
+                  style={styles.deleteIcon}
+                ></i>
+              </List.Item>
+            )}
+          />
+        </div>
+        <Button 
+          type="primary" 
+          onClick={() => dispatch({ type: OPEN_MODAL, payload: { selectedFavorite: null } })}
+          style={styles.addButton}
+        >
+          Add Favorite
+        </Button>
         <FavoriteDetail favorite={selectedFavorite} visible={isModalVisible} />
+      </div>
     </div>
   );
+};
+
+const styles = {
+  container: {
+    padding: '10px',
+  },
+  header: {
+    fontFamily: 'Georgia, Helvetica, Arial, sans-serif',
+    color: '#4A4A4A',
+    fontSize: '32px',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  favoritesGroupContainer: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gap: '20px',
+    marginTop: '20px',
+  },
+  favoriteGroup: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+    padding: '10px',
+    borderRadius: '8px',
+    background: '#F6D6D6',  
+    border: '3px solid #fff',
+  },
+  favoriteGroupHeader: {
+    fontSize: '24px',
+    fontWeight: 'bold',
+    fontFamily: '"Arial", sans-serif',
+    marginBottom: '10px',
+    textAlign: 'center',
+  },
+  favoriteItem: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '10px',
+    background: '#FFFFFF',  // 白色背景
+    borderRadius: '5px',
+    border: '1px solid #ccc',
+    marginBottom: '10px',
+  },
+  favoriteText: {
+    cursor: 'pointer',
+    fontSize: '16px',
+  },
+  deleteIcon: {
+    cursor: 'pointer',
+    fontSize: '18px',
+    color: '#000',  
+  },
+  addButton: {
+    marginTop: '10px',
+    padding: '10px 20px',
+    backgroundColor: '#3AA6B9',  
+    border: '1px solid #fff',
+    borderRadius: '5px',
+    color: 'white',
+    cursor: 'pointer',
+    width: '50%',  
+    alignSelf: 'flex-start',  
+  },
 };
 
 export default Favorites;
