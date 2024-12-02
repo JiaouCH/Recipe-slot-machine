@@ -25,7 +25,7 @@ const OptionForm = ({ type, optionModalVisible }) => {
 
     useEffect(() => {
         form.setFieldsValue({
-            option: '' // Set to empty string for clarity
+            option: '' 
         });
     }, [form]);
 
@@ -44,7 +44,7 @@ const OptionForm = ({ type, optionModalVisible }) => {
             {optionModalVisible && (
                 <Form form={form} onFinish={onFinish}>
                     <Form.Item
-                        name="option"  // Add name to link form data
+                        name="option"  
                         label={`${type} Option`}
                         rules={[{ required: true, message: `Please input the ${type}!` }]}
                     >

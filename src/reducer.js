@@ -3,14 +3,14 @@ const UPDATE_FAVORITE = 'UPDATE_FAVORITE';
 const ADD_FAVORITE = 'ADD_FAVORITE';
 const DELETE_FAVORITE = 'DELETE_FAVORITE';
 const OPEN_MODAL = 'OPEN_MODAL';
-const CLOSE_MODAL = 'CLOSE_MODAL'; // 新增关闭 Modal 的 action
-const ADD_OPTION = 'ADD_OPTION'; // 新增添加选项的 action
-const DELETE_OPTIONS = 'DELETE_OPTIONS'; // 新增删除选项的 action
-const ADD_SELECTED_OPTIONS = 'ADD_SELECTED_OPTIONS'; // 新增添加选项的 action
-const DELETE_SELECTED_OPTIONS = 'DELETE_SELECTED_OPTIONS'; // 新增删除选项的 action
-const OPEN_OPTION_MODAL = 'OPEN_OPTION_MODAL'; // 新增打开选项 Modal 的 action
-const CLOSE_OPTION_MODAL = 'CLOSE_OPTION_MODAL'; // 新增关闭选项 Modal 的 action
-const TOGGLE_SELECTED_OPTIONS = 'TOGGLE_SELECTED_OPTIONS'; // 新增切换选项的 action
+const CLOSE_MODAL = 'CLOSE_MODAL'; 
+const ADD_OPTION = 'ADD_OPTION'; 
+const DELETE_OPTIONS = 'DELETE_OPTIONS'; 
+const ADD_SELECTED_OPTIONS = 'ADD_SELECTED_OPTIONS'; 
+const DELETE_SELECTED_OPTIONS = 'DELETE_SELECTED_OPTIONS'; 
+const OPEN_OPTION_MODAL = 'OPEN_OPTION_MODAL'; 
+const CLOSE_OPTION_MODAL = 'CLOSE_OPTION_MODAL'; 
+const TOGGLE_SELECTED_OPTIONS = 'TOGGLE_SELECTED_OPTIONS'; 
 
 // initial state: initial states are props for rootreducer, so that the reducer is able to initialize the state 
 const loadFavoritesFromLocalStorage = () => {
@@ -26,7 +26,6 @@ const loadFavoritesFromLocalStorage = () => {
     ];
 };
 
-//改好了
 // initailize options help generate key for each option, return the options with keys, so that we can do crud on options
 const initializeOptions = () => {
     const generateItems = (arr) =>

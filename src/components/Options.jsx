@@ -91,7 +91,7 @@ const styles = {
         gap: '10px',
         padding: '10px',
         borderRadius: '8px',
-        background: '#F6D6D6',  // 统一使用浅粉色背景
+        background: '#F6D6D6',  
         border: '3px solid #fff',
     },
     optionGroupHeader: {

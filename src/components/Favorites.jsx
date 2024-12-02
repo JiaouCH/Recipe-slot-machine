@@ -93,7 +93,7 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '10px',
-    background: '#FFFFFF',  // 白色背景
+    background: '#FFFFFF',  
     borderRadius: '5px',
     border: '1px solid #ccc',
     marginBottom: '10px',

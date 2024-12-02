@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Carousel, Button } from 'antd';
 import { ADD_FAVORITE } from '../reducer';
-import './SlotMachineModify.css'; // 引入自定义样式
+import './SlotMachineModify.css'; 
 
 const SlotMachine = () => {
   const [isRolling, setIsRolling] = useState(false);
@@ -45,7 +45,6 @@ const SlotMachine = () => {
     });
   }
 
-  // 样式内容
   const contentStyle = {
     margin: 0,
     height: '160px',
@@ -111,7 +110,6 @@ const SlotMachine = () => {
         </Carousel>
       </div>
 
-      {/* 开始和停止按钮 */}
       {!isRolling ? (
         <div>
             <Button onClick={startRoll}>Start Rolling</Button>
