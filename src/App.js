@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import SlotMachineModify from './components/SlotMachine_Modify';
+import SlotMachine from './components/SlotMachine_Modify';
 import Favorites from './components/Favorites';
 import './App.css';  
 import { Provider } from 'react-redux'; 
@@ -13,7 +13,7 @@ const App = () => {
       <div style={styles.container}> 
       <h1 style={styles.header}>Recipe Slot Machine</h1>
       <div className="app">
-        <SlotMachineModify/>
+        <SlotMachine/>
         <Favorites />  
         <Options />
       </div>
