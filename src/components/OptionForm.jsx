@@ -24,10 +24,13 @@ const OptionForm = ({ type, optionModalVisible }) => {
     };
 
     useEffect(() => {
-        form.setFieldsValue({
-            option: '' 
-        });
-    }, [form]);
+        if (optionModalVisible) {
+            form.setFieldsValue({
+                option: '' 
+            });
+        }
+    }, [optionModalVisible, form]);
+    
 
     const onFinish = (values) => {
         addOptions(values.option, type);
@@ -41,22 +44,20 @@ const OptionForm = ({ type, optionModalVisible }) => {
             onCancel={closeOptionModal}
             footer={null}
         >
-            {optionModalVisible && (
-                <Form form={form} onFinish={onFinish}>
-                    <Form.Item
-                        name="option"  
-                        label={`${type} Option`}
-                        rules={[{ required: true, message: `Please input the ${type}!` }]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit">
-                            Save
-                        </Button>
-                    </Form.Item>
-                </Form>
-            )}
+            <Form form={form} onFinish={onFinish}>
+                <Form.Item
+                    name="option"  
+                    label={`${type} Option`}
+                    rules={[{ required: true, message: `Please input the ${type}!` }]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        Save
+                    </Button>
+                </Form.Item>
+            </Form>
         </Modal>
     );
 };
