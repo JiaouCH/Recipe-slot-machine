@@ -13,7 +13,7 @@ const Favorites = () => {
   const isModalVisible = useSelector((state) => state.isModalVisible); 
 
   /**
-   * Form included in a modal used for adding a new Favorite or editing an existing form.
+   * delete a favorite by dispatching the DELETE_FAVORITE action with the favoriteId as the payload.
    *
    * @param {number} favoriteId - Id of favorite to be deleted
    * @return {void}
