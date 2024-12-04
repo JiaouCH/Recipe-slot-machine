@@ -11,6 +11,16 @@ const Favorites = () => {
   const favorites = useSelector((state) => state.favorites); 
   const selectedFavorite = useSelector((state) => state.selectedFavorite); 
   const isModalVisible = useSelector((state) => state.isModalVisible); 
+
+  /**
+   * Form included in a modal used for adding a new Favorite or editing an existing form.
+   *
+   * @param {number} favoriteId - Id of favorite to be deleted
+   * @return {void}
+   * @example
+   *
+   *     deleteFavorite(1733127909566.203)
+   */
   const deleteFavorite = (favoriteId) => {
     dispatch({
         type: DELETE_FAVORITE,
@@ -28,6 +38,7 @@ const Favorites = () => {
             renderItem={(item, index) => (
               <List.Item key={index} style={styles.favoriteItem}>
                 <span 
+                  // when user click a favorite, it will automatically open the form modal by dispatching the OPEN_MODAL action and setting the payload to be the selected Favorite item.
                   onClick={() => dispatch({ type: OPEN_MODAL, payload: { selectedFavorite: item } })} 
                   style={styles.favoriteText}
                 >
@@ -44,6 +55,7 @@ const Favorites = () => {
         </div>
         <Button 
           type="primary" 
+          // when user click the Add Favorite button, it will automatically open the form modal by dispatching the OPEN_MODAL action and setting the payload to be null.
           onClick={() => dispatch({ type: OPEN_MODAL, payload: { selectedFavorite: null } })}
           style={styles.addButton}
         >

@@ -4,6 +4,16 @@ import { Button } from 'antd';
 import { TOGGLE_SELECTED_OPTIONS, DELETE_OPTIONS, OPEN_OPTION_MODAL } from '../reducer';
 import OptionForm from './OptionForm';
 
+
+/**
+   * Options component is mainly used for displaying the options for methods, meats, sides, and drinks, allowing users to add new options and delete existing options.
+   *
+   * 
+   * @return {JSX.Element}
+   * @example
+   *
+   *     Options()
+   */
 const Options = () => {
     const dispatch = useDispatch();
     const optionModalVisible = useSelector((state) => state.optionModalVisible);
@@ -11,6 +21,16 @@ const Options = () => {
     const options = useSelector((state) => state.options);
     const [type, setType] = useState('');
 
+    /**
+   * dispatch the TOGGLE_SELECTED_OPTIONS action, which will remove the options from selectedOptions or add the options clicked to the selectedOptions.
+   *
+   * @param {string} optionid - Id of the option to be toggled
+   * @param {string} types - type of option (methods/meats/sides/drinks)
+   * @return {void}
+   * @example
+   *
+   *     toggleSelectedOptions('stir-fry', 'methods')
+   */
     const toggleSelectedOptions = (optionid, types) => {
         dispatch({
             type: TOGGLE_SELECTED_OPTIONS,
@@ -18,6 +38,15 @@ const Options = () => {
         });
     }
 
+    /**
+   * dispatch the DELETE_OPTIONS action with types, which will remove the options in the selectedOptions from options state of given option types(methods/meats/sides/drinks).
+   *
+   * @param {string} types - type of option (methods/meats/sides/drinks)
+   * @return {void}
+   * @example
+   *
+   *     deleteOptions('methods')
+   */
     const deleteOptions = (types) => {
         dispatch({
             type: DELETE_OPTIONS,
@@ -27,6 +56,14 @@ const Options = () => {
         });
     }
 
+    /**
+   * dispatch the OPEN_OPTION_MODAL action, which will set the optionModalVisible to true.
+   *
+   * @return {void}
+   * @example
+   *
+   *     openAddOptionModal()
+   */
     const openAddOptionModal = () => {
         dispatch({
             type: OPEN_OPTION_MODAL
@@ -48,13 +85,15 @@ const Options = () => {
                                         toggleSelectedOptions(option.key, type);
                                     }}
                                     style={selectedOptions[type].has(option.key) ? styles.optionSelected : styles.optionUnselected}
+                                    // We check whether the id of the option is in the selectedOptions, if yes then we use a different style for the selected Options
                                 >
                                     {option.option}
                                 </span>
                             ))}
                         </div>
                         <div style={styles.buttonContainer}>
-                            <Button onClick={() => { deleteOptions(type) }} style={styles.deleteAddButton}>Delete</Button>
+                            <Button onClick={() => { deleteOptions(type) }} style={styles.deleteAddButton} disabled={selectedOptions[type].size === 0}>Delete</Button> 
+                            {/* the delete button will be disabled if there are no selected options*/}
                             <Button onClick={() => { 
                                 setType(type);
                                 openAddOptionModal(); 

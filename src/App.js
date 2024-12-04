@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import SlotMachine from './components/SlotMachine_Modify';
 import Favorites from './components/Favorites';
 import './App.css';  
@@ -6,6 +6,14 @@ import { Provider } from 'react-redux';
 import store from './store'; 
 import Options from './components/Options';
 
+/**
+ * App function.
+ *
+ * @return {JSX.Element}
+ * @example
+ *
+ *     App()
+ */
 const App = () => {
   return (
     <Provider store={store}> 

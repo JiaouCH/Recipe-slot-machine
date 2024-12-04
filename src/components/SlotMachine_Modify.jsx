@@ -4,11 +4,20 @@ import { Carousel, Button } from 'antd';
 import { ADD_FAVORITE } from '../reducer';
 import './SlotMachineModify.css'; 
 
+/**
+   * SlotMachine component is mainly used for rolling the methods, meats, sides, and drinks, allowing users to stop the rolling and add the random generated options to the favorites.
+   *
+   * 
+   * @return {JSX.Element}
+   * @example
+   *
+   *     SlotMachine()
+   */
 const SlotMachine = () => {
-  const [isRolling, setIsRolling] = useState(false);
+  const [isRolling, setIsRolling] = useState(false); // isRolling a state to control the autoplay property of the Carousel
   const dispatch = useDispatch();
   const options = useSelector((state) => state.options);
-  const MethodRef = useRef(null);
+  const MethodRef = useRef(null); // useRef are to get a reference to the current slice of the Carousel
   const MeatRef = useRef(null);
   const SidesRef = useRef(null);
   const DrinkRef = useRef(null);
@@ -23,7 +32,20 @@ const SlotMachine = () => {
     setIsRolling(true);
   };
   
+  /**
+   * Stop the rolling, by setting the isRolling to false (a state controlling the autoplay of the Carousel) and setting the current random generated recipe (the "selected" state) to current slice of Carousel.
+   *
+   * @param {number} methodslide - current slide of the method Carousel
+   * @param {number} meatslide - current slide of the meat Carousel
+   * @param {number} sideslide - current slide of the sides Carousel
+   * @param {number} drinkslide - current slide of the drink Carousel
+   * @return {JSX.Element}
+   * @example
+   *
+   *     stopRoll(2,3,4,2)
+   */
   const stopRoll = (methodslide, meatslide, sideslide, drinkslide) => {
+    console.log(methodslide, meatslide, sideslide, drinkslide);
     setIsRolling(false);
     setSelected({
         method: options.methods[methodslide],
@@ -33,6 +55,18 @@ const SlotMachine = () => {
     });
   };
 
+  /**
+   * Dispatch the ADD_FAVORITE action with the selected recipe as payload, which will add the selected recipe to the favorites state.
+   *
+   * @param {string} method - method of cooking
+   * @param {string} meat - meat type
+   * @param {string} sides - side
+   * @param {string} drink - drink
+   * @return {JSX.Element}
+   * @example
+   *
+   *     addFavorite({method: "grill", meat: "fish fillet", sides: "Greek Salad", drink: "apple juice"})
+   */
   const addFavorite = ({ method, meat, sides, drink }) => {
     dispatch({
       type: ADD_FAVORITE,
@@ -48,7 +82,6 @@ const SlotMachine = () => {
   const contentStyle = {
     margin: 0,
     height: '160px',
-    color: 'black',
     lineHeight: '160px',
     textAlign: 'center',
     background: '#89B9AD',
@@ -75,6 +108,8 @@ const SlotMachine = () => {
     <div className="slot-machine-container">
       <div className="carousel-wrapper">
         <Carousel autoplay={isRolling} vertical autoplaySpeed={670} dots={false} ref={MethodRef}>
+          {/* autoplay Speed different to make the random generation possible */}
+          {/* MethodRef used for accessing the current slide of the Carousel */}
           {options.methods.map((method, index) => (
             <div key={index}>
               <h3 style={contentStyle}>{method.option}</h3>
@@ -110,6 +145,7 @@ const SlotMachine = () => {
         </Carousel>
       </div>
 
+      {/* conditional rendering the start rolling button, stop rolling button and add favorite button */}
       {!isRolling ? (
         <div>
             <Button onClick={startRoll}>Start Rolling</Button>

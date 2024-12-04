@@ -12,7 +12,16 @@ const OPEN_OPTION_MODAL = 'OPEN_OPTION_MODAL';
 const CLOSE_OPTION_MODAL = 'CLOSE_OPTION_MODAL'; 
 const TOGGLE_SELECTED_OPTIONS = 'TOGGLE_SELECTED_OPTIONS'; 
 
-// initial state: initial states are props for rootreducer, so that the reducer is able to initialize the state 
+
+/**
+ * load favorites from local storage, if the favorites array is not in local storage, create a new favorites array to initialize the state
+ * 
+ *
+ * @return {Array} - favorites array
+ * @example
+ *
+ *     loadFavoritesFromLocalStorage()
+ */
 const loadFavoritesFromLocalStorage = () => {
     const savedFavorites = localStorage.getItem('favorites');
     return savedFavorites ? JSON.parse(savedFavorites) : [
@@ -26,7 +35,16 @@ const loadFavoritesFromLocalStorage = () => {
     ];
 };
 
-// initailize options help generate key for each option, return the options with keys, so that we can do crud on options
+
+/**
+ * initailize options help generate key for each option, return the options with keys assigned for each option, so that we can do crud on options
+ * 
+ *
+ * @return {Object} - options object with four arrays of options
+ * @example
+ *
+ *     initializeOptions()
+ */
 const initializeOptions = () => {
     const generateItems = (arr) =>
       arr.map(option => ({ option, key: Date.now() + Math.random() }));
@@ -38,33 +56,63 @@ const initializeOptions = () => {
     };
   };
 
+/**
+ * load options from the local storage, if the local storage does not have options key, then initialize the options using predefined options
+ * 
+ *
+ * @return {Object} - options object with four arrays of options
+ * @example
+ *
+ *     initializeOptions()
+ */
 const loadFoodOptionsFromLocalStorage = () => {
     const savedOptions = localStorage.getItem('options');
     return savedOptions ? JSON.parse(savedOptions) : initializeOptions();
 };
 
-// initial state
 const initialFavoriteState = {
-    favorites: loadFavoritesFromLocalStorage(), 
-    options: loadFoodOptionsFromLocalStorage(), 
-    isModalVisible: false,
-    selectedFavorite: null,
-    selectedOptions: {
-        methods: new Set(),
+    favorites: loadFavoritesFromLocalStorage(), // load favorites from local storage or using predefined favorites (None none with none, none)
+    options: loadFoodOptionsFromLocalStorage(), // load options from local storage or using predefined options
+    isModalVisible: false, // the favorite form modal visibility
+    selectedFavorite: null, // selected favorite to be edited
+    selectedOptions: {  // id of selected options to be deleted
+        methods: new Set(), //set is used to avoid duplicate option id
         meats: new Set(),
         sides: new Set(),
         drinks: new Set()
     },
-    optionModalVisible: false,
+    optionModalVisible: false, // the option form modal visibility
 };
 
-// Helper function to save favorites to localStorage
+/**
+ * save favorites to local storage
+ * 
+ * @param {Array} favorites - favorites array
+ * @return {void} 
+ * @example
+ *
+ *     saveFavoritesToLocalStorage([{method: "grill", meat: "fish fillet", sides: "Greek Salad", drink: "apple juice", key: "1733127909566.203"}])
+ */
 const saveFavoritesToLocalStorage = (favorites) => {
     localStorage.setItem('favorites', JSON.stringify(favorites));
 };
 
 
-// update state if the action is of the type UPDATE_FAVORITE
+
+/**
+ * update selected favorite according to user input value, update the entire favorites array and then save the new favorites array to local storage
+ * 
+ * @param {Object} state 
+ * @param {number} favoriteId - Id of favorite to be edited
+ * @param {string} method - method of cooking
+ * @param {string} meat - meat type
+ * @param {string} sides - side
+ * @param {string} drink - drink
+ * @return {Object} - updated state 
+ * @example
+ *
+ *     updateFavorite(state, 1733127909566.203, 'grill', 'fish fillet', 'Greek Salad', 'apple juice')
+ */
 const updateFavorite = (state, favoriteId, method, meat, sides, drink) => {
     const newFavorites = state.favorites.map(favorite => 
         favorite.key === favoriteId 
@@ -78,7 +126,16 @@ const updateFavorite = (state, favoriteId, method, meat, sides, drink) => {
     };
 }
 
-// update state if the action is of the type ADD_FAVORITE
+/**
+ * add a new favorite according to user input value, update the entire favorites array and then save the new favorites array to local storage
+ * 
+ * @param {Object} state 
+ * @param {number} favoriteId - Id of favorite to be edited
+ * @return {Object} - updated state 
+ * @example
+ *
+ *     addFavorite(state, 'grill', 'fish fillet', 'Greek Salad', 'apple juice')
+ */
 const addFavorite = (state, method, meat, sides, drink) => {
     const newFavorite = {
         method: method,
@@ -95,7 +152,19 @@ const addFavorite = (state, method, meat, sides, drink) => {
     };
 }
 
-// update state if the action is of the type DELETE_FAVORITE
+/**
+ * delete the favorite according to favoriteId, update the entire favorites array and then save the new favorites array to local storage
+ * 
+ * @param {Object} state 
+ * @param {string} method - method of cooking
+ * @param {string} meat - meat type
+ * @param {string} sides - side
+ * @param {string} drink - drink
+ * @return {Object} - updated state 
+ * @example
+ *
+ *     deleteFavorite(state, 1733127909566.203)
+ */
 const deleteFavorite = (state, favoriteId) => {
     const newFavorites = state.favorites.filter(favorite => favorite.key !== favoriteId);
     saveFavoritesToLocalStorage(newFavorites);
@@ -105,6 +174,16 @@ const deleteFavorite = (state, favoriteId) => {
     };
 }
 
+/**
+ * open the modal by setting the isModalVisible true and set the selected favorite to be the selectedFavorite
+ * 
+ * @param {Object} state 
+ * @param {Object} selectedFavorite - selected favorite to be edited
+ * @return {Object} - updated state 
+ * @example
+ *
+ *     openModal(state, {method: "grill", meat: "fish fillet", sides: "Greek Salad", drink: "apple juice", key: "1733127909566.203"})
+ */
 const openModal = (state, selectedFavorite) => {
     return {
         ...state,
@@ -113,6 +192,16 @@ const openModal = (state, selectedFavorite) => {
     };
 }
 
+/**
+ * close the modal by setting the isModalVisible false and set the selected favorite to be null
+ * 
+ * @param {Object} state
+ * @return {Object} - updated state
+ * 
+ * @example
+ * 
+ *    closeModal(state)
+ */
 const closeModal = (state) => {
     return {
         ...state,
@@ -121,21 +210,12 @@ const closeModal = (state) => {
     };
 }
 
-const openAddOptionModal = (state) => {
-    return {
-        ...state,
-        optionModalVisible: true,
-    };
-}
-
-const closeAddOptionModal = (state) => {
-    return {
-        ...state,
-        optionModalVisible: false,
-    };
-}
-
-// add new selected options to be deleted
+/**
+ * add a new option to the selected options array, the selected options array is a set of options to be deleted, so that we can avoid duplicate options
+ * 
+ * @param {Object} state 
+ * @returns {Object} - updated state
+ */
 const addSelectedOptions = (state, types, optionid) => {
     const originalSelectedOptions = state.selectedOptions;
     const newSelectedOptions = {
@@ -148,7 +228,16 @@ const addSelectedOptions = (state, types, optionid) => {
     }
 }
 
-// delete selected options from selected options array, I used deep copy to avoid changing the original state
+
+/**
+ * remove the selected option id from the selected options set, I used deep copy to avoid changing the original state
+ * Set is used instead of array because the has method of Set has a lower time complexity then using for loop to traverse an array. The time complexity of Set.has is O(1) and the time complexity of array traversal is O(n).
+ * 
+ * @param {Object} state 
+ * @param {String} types - option types (methods/meats/sides/drinks)
+ * @param {Number} optionid 
+ * @returns {Object} - updated state
+ */
 const deleteSelectedOptions = (state, types, optionid) => {
     const newSelectedOptions = {
         ...state.selectedOptions,
@@ -161,7 +250,15 @@ const deleteSelectedOptions = (state, types, optionid) => {
     };
 };
 
-//toggle selected options based on click times, if even times clicked, the option will be unselected, otherwise, it will be selected as an option to be deleted.
+/**
+ * toggle selected options based on click times, if even times clicked, the option will be unselected, otherwise, it will be selected as an option to be deleted.
+ * If the selected option id is not in the selected Options array, then add it to the selected Option array. If the selected option id is already in the selected Options array, then remove it from the selected Options array.
+ * 
+ * @param {Object} state 
+ * @param {String} types - option types (methods/meats/sides/drinks)
+ * @param {Number} optionid 
+ * @returns {Object} - updated state
+ */
 const toggleSelectedOptions = (state, types, optionid) => {
     const originalSelectedOptions = state.selectedOptions;
     const newSelectedOptions = {
@@ -177,7 +274,14 @@ const toggleSelectedOptions = (state, types, optionid) => {
 }
 
 
-// add options 更新完成
+/**
+ * Add a new option of a given type to the options, and save the new Options to local storage
+ * 
+ * @param {Object} state 
+ * @param {String} types 
+ * @param {String} option 
+ * @returns {Object} - updated state
+ */
 const addOptions = (state, types, option) => {
     const newOptions = {
         ...state.options,
@@ -190,7 +294,13 @@ const addOptions = (state, types, option) => {
     };
 }
 
-// delete options 
+/**
+ * If the selected option id is in the selected Options set, then filter it out.
+ * 
+ * @param {Object} state 
+ * @param {String} types 
+ * @returns {Object} - updated state
+ */ 
 const deleteOptions = (state, types) => {
     const newOptions = {
         ...state.options,
@@ -208,6 +318,12 @@ const deleteOptions = (state, types) => {
     };
 };
 
+/**
+ * open the option modal by setting the optionModalVisible to true
+ * 
+ * @param {Object} state
+ * @returns {Object} - updated state
+ */
 const openOptionModal = (state) => {
     return {
         ...state,
@@ -215,6 +331,13 @@ const openOptionModal = (state) => {
     };
 }
 
+
+/**
+ * close the option modal by setting the optionModalVisible to false
+ * 
+ * @param {Object} state
+ * @returns {Object} - updated state
+ */
 const closeOptionModal = (state) => {
     return {
         ...state,
@@ -222,6 +345,15 @@ const closeOptionModal = (state) => {
     };
 }
 
+
+/**
+ * The root reducer function, used for updating the state based on action type.
+ * 
+ * @param {Object} state
+ * @param {Object} action
+ * 
+ * @returns {Object} - updated state
+ */
 function rootReducer(state = initialFavoriteState, action) {
     switch(action.type) {
         case UPDATE_FAVORITE:
@@ -255,10 +387,6 @@ function rootReducer(state = initialFavoriteState, action) {
             return addSelectedOptions(state, action.payload.types, action.payload.optionid);
         case DELETE_SELECTED_OPTIONS:
             return deleteSelectedOptions(state, action.payload.types, action.payload.optionid);
-        case OPEN_OPTION_MODAL:
-            return openAddOptionModal(state);
-        case CLOSE_OPTION_MODAL:
-            return closeAddOptionModal(state);
         case TOGGLE_SELECTED_OPTIONS:
             return toggleSelectedOptions(state, action.payload.types, action.payload.optionid);
         case OPEN_OPTION_MODAL:

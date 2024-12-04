@@ -3,7 +3,16 @@ import { Form, Modal, Input, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { UPDATE_FAVORITE, ADD_FAVORITE, CLOSE_MODAL } from '../reducer'; 
 
-
+/**
+ * Form included in a modal used for adding a new Favorite or editing an existing form.
+ *
+ * @param {Object} favorite - A favorite object
+ * @param {boolean} visible - A boolean value for indicating whether the modal needs to be visible or not.
+ * @return {JSX.Element}
+ * @example
+ *
+ *     FavoriteDetail({{method: "grill", meat: "fish fillet", sides: "Greek Salad", drink: "apple juice", key: "1733127909566.203"}, true})
+ */
 const FavoriteDetail = ({ favorite, visible }) => {
     const [form] = Form.useForm();
     const dispatch = useDispatch();
@@ -19,6 +28,19 @@ const FavoriteDetail = ({ favorite, visible }) => {
         }
     }, [favorite, form]);
 
+    /**
+     * update a selected favorite value by dispatching the UPDATE_FAVORITE action to the reducer
+     *
+     * @param {number} key - key of selected favorite, a random value generated when a new favorite is added
+     * @param {string} method - cooking method
+     * @param {string} meat - meat type
+     * @param {string} sides - side
+     * @param {string} drink - drink
+     * @return {void}
+     * @example
+     *
+     *     updateFavorite({{method: "grill", meat: "fish fillet", sides: "Greek Salad", drink: "apple juice", key: "1733127909566.203"})
+     */
     const updateFavorite = ({key, method, meat, sides, drink}) => {
         dispatch({
           type: UPDATE_FAVORITE,
@@ -32,6 +54,18 @@ const FavoriteDetail = ({ favorite, visible }) => {
         });
       };
 
+    /**
+     * add a new favorite by dispatching the ADD_FAVORITE action to the reducer
+     *
+     * @param {string} method - cooking method
+     * @param {string} meat - meat type
+     * @param {string} sides - side
+     * @param {string} drink - drink
+     * @return {void}
+     * @example
+     *
+     *     addFavorite({{method: "grill", meat: "fish fillet", sides: "Greek Salad", drink: "apple juice"})
+     */
     const addFavorite = ({method, meat, sides, drink}) => {
         dispatch({
             type: ADD_FAVORITE,
@@ -44,11 +78,26 @@ const FavoriteDetail = ({ favorite, visible }) => {
         });
     };
 
-
+    /**
+     * close the form by dispatching the CLOSE_MODAL action to the reducer
+     *
+     * @return {void}
+     * @example
+     *
+     *     onClose()
+     */
     const onClose = () => {
         dispatch({ type: CLOSE_MODAL });
     }
 
+    /**
+     * antd form function called when users hit the save button, it will update favorite or add a new favorite and close the modal
+     * @param {Object} values - form field values
+     * @return {void}
+     * @example
+     *    
+     *     onFinish({method: "grill", meat: "fish fillet", sides: "Greek Salad", drink: "apple juice"})
+     */
     const onFinish = (values) => {
         if(favorite){
             const updatedFavorite = {
